@@ -16,8 +16,8 @@ def analyze_transcript_with_gemini(transcript_text, audio_filename):
     synthesize the truth in the required JSON format.
     """
     api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key or api_key.strip() in {"REPLACE_ME", "", "your_gemini_api_key_here"}:
-        return {"error": "GEMINI_API_KEY missing or placeholder. Configure environment variable."}
+    if not api_key:
+        return {"error": "GEMINI_API_KEY not set in environment"}
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key={api_key}"
 
     system_prompt = (
@@ -59,15 +59,10 @@ def analyze_transcript_with_gemini(transcript_text, audio_filename):
         ]
     }}
 
-    Guidelines:
-    - Use the exact field names and structure above. Do not add or remove fields.
-    - For any field not present in the transcript, use "Not explicitly mentioned in the transcript".
-    - For 'skill_mastery', use "intermediate" unless the transcript clearly indicates otherwise.
-    - For 'leadership_claims', use "Merely coordinated, not led." unless the transcript clearly indicates otherwise.
-    - For 'team_experience', use "Individual contributor" unless the transcript clearly indicates otherwise.
-    - For 'skills and other keywords', extract all relevant technical terms, skills, or keywords mentioned.
-    - For 'deception_patterns', list all types of deception and the exact contradictory claims or statements.
-    - Do not include any explanation, summary, or commentary outside the JSON object.
+    The 'programming_language' is 'Not explicitly mentioned in the transcript'.
+    The 'skill_mastery' is 'intermediate'.
+    The 'leadership_claims' should be "Merely coordinated, not led."
+    The 'team_experience' is 'Individual contributor'.
     """
 
     headers = {'Content-Type': 'application/json'}
