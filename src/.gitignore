@@ -1,0 +1,20 @@
+This file tells Git which files to ignore.
+We are ignoring generated output files, raw transcripts, and audio files.
+Ignore all JSON files
+*.json
+
+Ignore all text files
+*.txt
+
+Ignore common audio files
+*.mp3
+*.wav
+*.m4a
+
+Python-specific files to ignore
+pycache/
+*.pyc
+
+Operating System files
+.DS_Store
+Thumbs.db
