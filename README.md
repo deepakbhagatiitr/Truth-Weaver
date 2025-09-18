@@ -220,18 +220,6 @@ One-step process: transcribe audio and analyze in a single request.
 
 ## 🔧 Configuration
 
-### Environment Variables
-
-```bash
-# Backend
-FLASK_ENV=production
-FLASK_APP=app.py
-GEMINI_API_KEY=your_api_key_here
-
-# Frontend
-VITE_API_URL=http://localhost:5000
-```
-
 ### Gemini API Setup
 
 1. Get your API key from [Google AI Studio](https://makersuite.google.com/app/apikey)

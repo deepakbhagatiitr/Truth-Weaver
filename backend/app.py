@@ -9,7 +9,8 @@ import json
 from truth_weaver_module import analyze_transcript_with_gemini
 
 app = Flask(__name__)
-CORS(app)
+# Allow CORS for all origins and all ports
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Configure upload settings
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
