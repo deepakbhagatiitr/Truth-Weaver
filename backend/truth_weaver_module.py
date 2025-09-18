@@ -3,23 +3,16 @@ import json
 import requests
 import time
 
-try:
-    from env_loader import load_env
-    load_env()
-except Exception:
-    pass
-
 
 def analyze_transcript_with_gemini(transcript_text, audio_filename):
     """
     Analyzes a transcript using the Gemini API to find contradictions and
     synthesize the truth in the required JSON format.
     """
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        return {"error": "GEMINI_API_KEY not set in environment"}
+    api_key = "AIzaSyDY9r_y4jdZ1sIJFT3zSGVztrusmPD0oH4"  # Replace with your actual API key
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key={api_key}"
 
+    # Define the system instruction for the Gemini model
     system_prompt = (
         "You are an AI detective named 'Truth Weaver' for the Innov8 3.0 hackathon. "
         "Your task is to analyze a transcript of a 'Whispering Shadow' agent's "
@@ -28,6 +21,7 @@ def analyze_transcript_with_gemini(transcript_text, audio_filename):
         "and present your findings in a specific JSON format."
     )
 
+    # Construct the user prompt with the transcript and instructions for the output
     user_query = f"""
     Analyze the following transcript from a "Whispering Shadow" agent.
     
@@ -74,12 +68,13 @@ def analyze_transcript_with_gemini(transcript_text, audio_filename):
 
     print("Sending request to Gemini API...")
 
-    for i in range(3):
+    for i in range(3):  # Retry up to 3 times with exponential backoff
         try:
             response = requests.post(url, headers=headers, data=json.dumps(payload))
             response.raise_for_status()
             result = response.json()
 
+            # The API returns a text field that is a JSON string, so we parse it
             json_string = result["candidates"][0]["content"]["parts"][0]["text"]
             return json.loads(json_string)
 
