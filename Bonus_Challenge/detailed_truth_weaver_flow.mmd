@@ -1,0 +1,77 @@
+flowchart TD
+    START[Truth Weaver Audio Analysis] --> UPLOAD[Audio File Upload]
+    
+    UPLOAD --> FORMAT{Check Audio Format}
+    FORMAT -->|Supported| CONVERT[Convert to WAV with pydub]
+    FORMAT -->|Unsupported| ERROR1[Return Format Error]
+    
+    CONVERT --> NOISE[Adjust for Ambient Noise]
+    NOISE --> RECOGNITION[Google Speech Recognition]
+    
+    RECOGNITION --> RECSUCCESS{Recognition Success?}
+    RECSUCCESS -->|Yes| TRANSCRIPT[Extract Transcript Text]
+    RECSUCCESS -->|No| ERROR2[Return Recognition Error]
+    
+    TRANSCRIPT --> MODE{Endpoint Mode}
+    MODE -->|/transcribe| RETURN1[Return Transcript Only]
+    MODE -->|/analyze| LOAD[Load Existing Transcript]
+    MODE -->|/transcribe-and-analyze| ANALYZE[Continue to Analysis]
+    
+    LOAD --> ANALYZE
+    ANALYZE --> GEMINI[Send to Gemini 2.5-flash-preview]
+    
+    GEMINI --> PROMPT[Process Analysis Prompt]
+    PROMPT --> INDICATORS[Detect Deception Indicators]
+    
+    INDICATORS --> LINGUISTIC[Linguistic Patterns Analysis]
+    INDICATORS --> EMOTIONAL[Emotional State Detection]
+    INDICATORS --> BEHAVIORAL[Behavioral Cues Identification]
+    
+    LINGUISTIC --> HEDGE[Hedge Words Detection]
+    LINGUISTIC --> REPETITION[Repetition Patterns]
+    LINGUISTIC --> SPECIFICITY[Lack of Specificity]
+    
+    EMOTIONAL --> STRESS[Stress Indicators]
+    EMOTIONAL --> CONFIDENCE[Confidence Levels]
+    EMOTIONAL --> DEFENSIVENESS[Defensive Language]
+    
+    BEHAVIORAL --> EVASION[Evasion Tactics]
+    BEHAVIORAL --> CONTRADICTION[Self-Contradictions]
+    BEHAVIORAL --> OVERDETAIL[Over-Detailing]
+    
+    HEDGE --> SCORING[Calculate Truth Score]
+    REPETITION --> SCORING
+    SPECIFICITY --> SCORING
+    STRESS --> SCORING
+    CONFIDENCE --> SCORING
+    DEFENSIVENESS --> SCORING
+    EVASION --> SCORING
+    CONTRADICTION --> SCORING
+    OVERDETAIL --> SCORING
+    
+    SCORING --> SYNTHESIS[Synthesize Final Analysis]
+    SYNTHESIS --> JSON[Generate Structured JSON]
+    
+    JSON --> FRONTEND[Send to React Frontend]
+    FRONTEND --> DISPLAY[Display Results with Tailwind UI]
+    
+    RETURN1 --> FRONTEND
+    ERROR1 --> FRONTEND
+    ERROR2 --> FRONTEND
+    
+    %% Node Styling
+    classDef startNode fill:#4CAF50,stroke:#2E7D32,stroke-width:3px,color:#fff
+    classDef uploadNode fill:#2196F3,stroke:#1565C0,stroke-width:2px,color:#fff
+    classDef processNode fill:#FF9800,stroke:#E65100,stroke-width:2px,color:#fff
+    classDef aiNode fill:#9C27B0,stroke:#6A1B9A,stroke-width:2px,color:#fff
+    classDef analysisNode fill:#673AB7,stroke:#4527A0,stroke-width:2px,color:#fff
+    classDef outputNode fill:#4CAF50,stroke:#2E7D32,stroke-width:2px,color:#fff
+    classDef errorNode fill:#F44336,stroke:#C62828,stroke-width:2px,color:#fff
+    
+    class START startNode
+    class UPLOAD,FORMAT uploadNode
+    class CONVERT,NOISE,RECOGNITION,TRANSCRIPT processNode
+    class GEMINI,PROMPT,SYNTHESIS aiNode
+    class INDICATORS,LINGUISTIC,EMOTIONAL,BEHAVIORAL,HEDGE,REPETITION,SPECIFICITY,STRESS,CONFIDENCE,DEFENSIVENESS,EVASION,CONTRADICTION,OVERDETAIL,SCORING analysisNode
+    class RETURN1,JSON,FRONTEND,DISPLAY outputNode
+    class ERROR1,ERROR2 errorNode

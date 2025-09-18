@@ -1,6 +1,10 @@
 # Truth Weaver: AI-Powered Transcript & Deception Analysis
 
 <div align="center">
+  <img src="Bonus_Challenge/aiworkflow.png" alt="AI Workflow Chart" width="600"/>
+</div>
+
+<div align="center">
 
 ![Truth Weaver Logo](https://img.shields.io/badge/Truth%20Weaver-AI%20Detective-blue?style=for-the-badge)
 
@@ -16,15 +20,17 @@
 ## 🎯 Overview
 
 Truth Weaver is an innovative system designed for the **Innov8 3.0 hackathon** that analyzes audio recordings of "Whispering Shadow" agents' testimonies. It uses advanced AI to identify inconsistencies, contradictions, and deception patterns in human speech, then synthesizes the most likely truth from conflicting claims.
+</div>
+
+🌐 **Live Demo:** [truth-weaver.vercel.app](https://truth-weaver.vercel.app/)
 
 ## ✨ Features
 
-- 🎤 **Audio Transcription**: Convert audio files to text using Google Speech Recognition
-- 🧠 **AI Analysis**: Powered by Google's Gemini API for sophisticated deception detection
+ - 🎤 **Audio Transcription**: Convert audio files to text using OpenAI Whisper (batch/offline) or via API
 - 🔍 **Pattern Recognition**: Identifies self-corrections, evasions, and contradictory claims
 - 📊 **Structured Output**: Generates detailed JSON reports with revealed truths and deception patterns
-- 🌐 **Modern UI**: Clean, professional React frontend with Tailwind CSS
-- 🐳 **Docker Ready**: Containerized backend for easy deployment
+ - **Google Gemini API** for advanced AI analysis
+ - **OpenAI Whisper** for audio transcription (batch/offline)
 - 🔄 **Real-time Processing**: Live audio upload and analysis
 
 ## 🏗️ Architecture
@@ -39,15 +45,47 @@ Truth Weaver/
 ├── backend/           # Flask API + AI Analysis
 │   ├── app.py         # Main Flask application
 │   ├── truth_weaver_module.py  # Gemini AI integration
-│   ├── requirements.txt
 │   └── Dockerfile     # Container configuration
-├── src/               # Original analysis scripts
+├── analysis/               # Original analysis scripts
 │   ├── truth_weaver.py
+    ├── transcriber.py
+    ├── /audio
+    ├── /json
+    ├── /transcript
 │   └── sample transcripts
-└── audio/             # Sample audio files
+└── Bonus_Challenge/   
+│   ├── detailed_truth_weaver_flow.mmd
+    ├── Mermaid Chart.png
 ```
 
+
 ## 🚀 Quick Start
+
+### Local Batch Usage (Recommended for Hackathon)
+
+1. Place your audio files (e.g., `interview1.wav`, `interview2.mp3`, etc.) in the `analysis/audio/` directory. Multiple common audio formats are supported.
+2. Set your Gemini API key in `analysis/truth_weaver.py` (the key is now hardcoded for hackathon demo):
+  ```python
+  GEMINI_API_KEY = "YOUR_GEMINI_API_KEY" 
+  ```
+3. (Optional) Set the Whisper model name and combined transcript filename as constants in the script if needed.
+4. Run the transcription script:
+  ```
+  python analysis/transcriber.py
+  ```
+5. Run the analysis script:
+  ```
+  python analysis/truth_weaver.py
+  ```
+6. Find transcript `.txt` files in `analysis/transcript/` and output `.json` files in `analysis/json/`.
+```
+/analysis
+  /audio         # Input audio files (.wav, .mp3, .m4a, etc.)
+  /transcript    # Output transcript files (.txt)
+  /json          # Output JSON analysis files
+  transcriber.py # Audio-to-text script
+  truth_weaver.py# Transcript analysis script
+```
 
 ### Prerequisites
 
@@ -239,8 +277,6 @@ docker restart truth-weaver
 3. Verify transcription appears
 4. Check AI analysis results
 
-### Sample Test Files
-Use the sample audio files in the `audio/` directory for testing.
 
 ## 🛠️ Development
 
@@ -263,31 +299,6 @@ npm run dev  # Runs on http://localhost:5173
 - Frontend: Edit components in `src/`
 - Styling: Use Tailwind CSS classes in JSX
 
-## 📁 Project Structure Details
-
-```
-├── frontend/                 # React frontend application
-│   ├── src/
-│   │   ├── App.jsx          # Main app component with upload/analysis UI
-│   │   ├── index.css        # Tailwind CSS imports
-│   │   └── main.jsx         # React entry point
-│   ├── package.json         # Frontend dependencies
-│   ├── tailwind.config.js   # Tailwind configuration
-│   └── vite.config.js       # Vite build configuration
-├── backend/                 # Flask backend API
-│   ├── app.py              # Main Flask application with endpoints
-│   ├── truth_weaver_module.py  # Gemini AI integration module
-│   ├── requirements.txt    # Python dependencies
-│   ├── Dockerfile         # Container configuration
-│   └── README.md          # Backend-specific documentation
-├── src/                    # Original analysis scripts
-│   ├── truth_weaver.py    # Original standalone script
-│   ├── transcriber.py     # Audio transcription utilities
-│   └── sample transcripts # Test transcript files
-├── audio/                 # Sample audio files for testing
-├── .gitignore            # Git ignore rules
-└── README.md             # This file
-```
 
 ## 🎨 UI Features
 
