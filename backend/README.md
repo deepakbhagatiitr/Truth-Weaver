@@ -43,6 +43,8 @@ One-step process: transcribe audio and analyze in single request.
 
 ## Setup
 
+### Option 1: Local Development
+
 1. **Install dependencies:**
    ```bash
    pip install -r requirements.txt
@@ -59,6 +61,47 @@ One-step process: transcribe audio and analyze in single request.
    python app.py
    ```
    Server runs on `http://localhost:5000`
+
+### Option 2: Docker Deployment
+
+1. **Build the Docker image:**
+   ```bash
+   cd backend
+   docker build -t truth-weaver-backend .
+   ```
+
+2. **Run the container:**
+   ```bash
+   docker run -p 5000:5000 truth-weaver-backend
+   ```
+
+3. **Set Gemini API Key:**
+   Edit `truth_weaver_module.py` before building, or pass as environment variable:
+   ```bash
+   docker run -p 5000:5000 -e GEMINI_API_KEY="your_key" truth-weaver-backend
+   ```
+
+4. **Run in background (detached mode):**
+   ```bash
+   docker run -d -p 5000:5000 --name truth-weaver truth-weaver-backend
+   ```
+
+5. **View logs:**
+   ```bash
+   docker logs truth-weaver
+   ```
+
+6. **Stop the container:**
+   ```bash
+   docker stop truth-weaver
+   ```
+
+The Docker setup includes:
+- Python 3.9 runtime
+- All required system dependencies (ffmpeg, audio libraries)
+- Automatic dependency installation
+- Health checks
+- Production-ready configuration
 
 ## Dependencies
 

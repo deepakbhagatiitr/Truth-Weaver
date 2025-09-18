@@ -38,17 +38,39 @@ def transcribe_audio():
             
             # Convert and optimize audio for speech recognition
             try:
+                # First, try to load the audio file
                 audio = AudioSegment.from_file(temp_file.name)
+                
                 # Optimize audio: convert to mono, 16kHz sample rate, normalize volume
                 audio = audio.set_channels(1)  # Convert to mono
                 audio = audio.set_frame_rate(16000)  # Set to 16kHz sample rate
                 audio = audio.normalize()  # Normalize volume
                 
+                # Export as WAV (most compatible format)
                 wav_path = temp_file.name.replace('.wav', '_converted.wav')
-                audio.export(wav_path, format="wav")
-            except Exception as e:
-                print(f"Audio conversion error: {e}")
+                audio.export(wav_path, format="wav", parameters=["-ac", "1", "-ar", "16000"])
+                
+                print(f"Audio converted successfully: {wav_path}")
+                
+            except Exception as audio_error:
+                print(f"Audio conversion failed: {audio_error}")
+                # If conversion fails, try to use the original file
                 wav_path = temp_file.name
+                
+                # If original file isn't WAV, try basic ffmpeg conversion
+                if not temp_file.name.endswith('.wav'):
+                    import subprocess
+                    try:
+                        wav_path = temp_file.name.replace('.wav', '_ffmpeg.wav')
+                        subprocess.run([
+                            'ffmpeg', '-i', temp_file.name, 
+                            '-ac', '1', '-ar', '16000', 
+                            '-y', wav_path
+                        ], check=True, capture_output=True)
+                        print(f"FFmpeg conversion successful: {wav_path}")
+                    except subprocess.CalledProcessError:
+                        print("FFmpeg conversion also failed, using original file")
+                        wav_path = temp_file.name
             
             # Use speech recognition with improved settings
             recognizer = sr.Recognizer()
@@ -133,16 +155,35 @@ def transcribe_and_analyze():
             audio_file.save(temp_file.name)
             
             try:
+                # First, try to load the audio file
                 audio = AudioSegment.from_file(temp_file.name)
+                
                 # Optimize audio: convert to mono, 16kHz sample rate, normalize volume
                 audio = audio.set_channels(1)  # Convert to mono
                 audio = audio.set_frame_rate(16000)  # Set to 16kHz sample rate
                 audio = audio.normalize()  # Normalize volume
                 
+                # Export as WAV (most compatible format)
                 wav_path = temp_file.name.replace('.wav', '_converted.wav')
-                audio.export(wav_path, format="wav")
-            except Exception:
+                audio.export(wav_path, format="wav", parameters=["-ac", "1", "-ar", "16000"])
+                
+            except Exception as audio_error:
+                print(f"Audio conversion failed: {audio_error}")
+                # If conversion fails, try to use the original file
                 wav_path = temp_file.name
+                
+                # If original file isn't WAV, try basic ffmpeg conversion
+                if not temp_file.name.endswith('.wav'):
+                    import subprocess
+                    try:
+                        wav_path = temp_file.name.replace('.wav', '_ffmpeg.wav')
+                        subprocess.run([
+                            'ffmpeg', '-i', temp_file.name, 
+                            '-ac', '1', '-ar', '16000', 
+                            '-y', wav_path
+                        ], check=True, capture_output=True)
+                    except subprocess.CalledProcessError:
+                        wav_path = temp_file.name
             
             recognizer = sr.Recognizer()
             recognizer.energy_threshold = 300
