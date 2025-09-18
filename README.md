@@ -1,8 +1,5 @@
 # Truth Weaver: AI-Powered Transcript & Deception Analysis
 
-<div align="center">
-  <img src="Bonus_Challenge/aiworkflow.png" alt="AI Workflow Chart" width="600"/>
-</div>
 
 <div align="center">
 
@@ -177,6 +174,10 @@ One-step process: transcribe audio and analyze in a single request.
 - ✅ **WEBM**
 
 ## 🧠 How It Works
+
+<div align="center">
+  <img src="Bonus_Challenge/aiworkflow.png" alt="AI Workflow Chart" width="600"/>
+</div>
 
 ### 1. Audio Processing
 - Converts audio to optimal format (mono, 16kHz)
