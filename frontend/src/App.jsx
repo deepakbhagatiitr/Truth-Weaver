@@ -35,7 +35,7 @@ function App() {
       formData.append('audio', audioFile);
 
       // Call backend API for transcription and analysis
-      const response = await fetch('http://localhost:5000/transcribe-and-analyze', {
+      const response = await fetch('https://truth-weaver.onrender.com/transcribe-and-analyze', {
         method: 'POST',
         body: formData,
       });
